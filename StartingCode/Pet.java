@@ -13,10 +13,11 @@ public class Pet implements Playable {
     private double currentHp;
     private List<Skills> skills;
     private double startingHp;
+    private Skills initiallyChosenSkill;
     private Map<Skills, Integer> skillRechargeTimes;
 
 
-    public Pet(String playerName, String petName, PlayerTypes playerType, PetTypes petType, double startingHp) {
+    public Pet(String playerName, String petName, PlayerTypes playerType, List<Skills> skills, PetTypes petType, double startingHp) {
         if (petName == null || petName.trim().isEmpty()) {
             throw new IllegalArgumentException("Pet name cannot be empty");
         }
@@ -44,7 +45,9 @@ public class Pet implements Playable {
     public int getPlayableId() {
         return playableId;
     }
-
+    public Skills getInitiallyChosenSkill() {
+        return initiallyChosenSkill;
+    }
     @Override
     public String getPlayerName() {
         return playerName;
