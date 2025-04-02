@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 public class Fight {
     private List<Pet> petList;
