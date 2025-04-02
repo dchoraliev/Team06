@@ -21,6 +21,10 @@ public class Pet implements Playable {
         if (petName == null || petName.trim().isEmpty()) {
             throw new IllegalArgumentException("Pet name cannot be empty");
         }
+        if(startingHp < 0)
+        {
+            throw new IllegalArgumentException("Pet starting HP cannot be less than 0.0");
+        }
         this.playerName = playerName;
         this.petName = petName;
         this.playerType = playerType;
