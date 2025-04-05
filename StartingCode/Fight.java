@@ -28,15 +28,21 @@ public class Fight {
         int awake = petList.size();
         int rounds = 0;
         while (awake != 1) {
-            for (Pet pet : petList) {
                 Round round = new Round(petList, random);
                 rounds += 1;
                 System.out.println("Playing round #" + rounds);
-                round.executeRound();
-                if (!pet.isAwake()) {
-                    awake -= 1;
+                for (Pet pet1 : petList) {
+                    System.out.println(pet1.getPetName() + "\nHP: " + pet1.getCurrentHp());
+                    for (Skills skill : Skills.values()) {
+                        System.out.println(skill.toString() + " CD: " + pet1.getSkillRechargeTime(skill));
+                    }
                 }
-            }
+                round.executeRound();
+                for (Pet pet : petList) {
+                    if (!pet.isAwake()) {
+                        awake -= 1;
+                    }
+                }
         }
 
         for (Pet pet : petList) {

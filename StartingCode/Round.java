@@ -114,6 +114,7 @@ public class Round {
             Pet damager = damage.getDamager();
             receiver.updateHp(receiver.getCurrentHp() - damage.calculateTotalDamage());
             System.out.println(damager.getPetName() + " hurt " + receiver.getPetName() + " using " + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
+            System.out.println("Random Damage: " + damage.getRandomDamage() + "\nConditional Damage: " + damage.getConditionalDamage());
         }
 
     };

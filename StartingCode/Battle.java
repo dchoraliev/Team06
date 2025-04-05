@@ -17,10 +17,14 @@ public class Battle {
         for (int i = 0; i < fightNumber; i++) {
             Fight fight = new Fight(petList, random);
             System.out.println("Executing Fight " + fightList.size()+1 + "/" + fightNumber);
+            System.out.println("Pets in fight:");
+            for (Pet pet : petList) {
+                System.out.println("Name: " + pet.getPetName() + ", Type: " + pet.getPetType());
+            }
             fight.executeFight();
             fightList.add(fight);
             for (Pet pet : petList) {
-                pet.resetHp();
+                pet.reset();
             }
         }
 
@@ -34,6 +38,8 @@ public class Battle {
             }
         }
 
+        System.out.println("Pet " + petList.get(0).getPetName() + "wins: " + petOneWins);
+        System.out.println("Pet " + petList.get(1).getPetName() + "wins: " + petTwoWins);
         if (petOneWins > petTwoWins) {
             System.out.println("Pet " + petList.get(0).getPetName() + " won!");
             return petList.get(0);
