@@ -4,11 +4,16 @@ public class Damage
 {
 	private double randomDamage;
 	private double conditionalDamage;
+
+	private Pet reciever;
+	private Pet damager;
 	
-	public Damage(double randomDamage, double conditionalDamage)
+	public Damage(double randomDamage, double conditionalDamage, Pet reciever, Pet damager)
 	{
 		this.randomDamage = randomDamage;
 		this.conditionalDamage = conditionalDamage;
+		this.reciever = reciever;
+		this.damager = damager;
 	}
 
 	public double getRandomDamage()
@@ -36,4 +41,11 @@ public class Damage
 		return randomDamage + conditionalDamage;
 	}
 
+	public Pet getDamager() {
+		return damager;
+	}
+
+	public Pet getReciever() {
+		return reciever;
+	}
 }
