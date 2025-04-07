@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class Pet implements Playable {
     private int playableUid;
@@ -13,7 +12,7 @@ public class Pet implements Playable {
     private double currentHp;
     private List<Skills> skills;
     private double startingHp;
-    private Skills initiallyChosenSkill;
+    private Skills chosenSkill;
     private Map<Skills, Integer> skillRechargeTimes;
 
 
@@ -49,8 +48,8 @@ public class Pet implements Playable {
     public int getPlayableId() {
         return playableId;
     }
-    public Skills getInitiallyChosenSkill() {
-        return initiallyChosenSkill;
+    public Skills getSkill() {
+        return chosenSkill;
     }
     @Override
     public String getPlayerName() {
@@ -80,6 +79,7 @@ public class Pet implements Playable {
     @Override
     public Skills chooseSkill() {
         //game-controlling class
+        // todo Have this function set chosenSkill
         return null;
     }
 

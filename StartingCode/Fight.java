@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Fight {
     private List<Pet> petList;
     private List<Round> roundList = new ArrayList<>();
-    private Random random;
+    private RandomGenerator random;
     private boolean isFinished;
     private Pet roundWinner;
 
@@ -13,9 +12,9 @@ public class Fight {
     /**
      * Creates the fight object.
      * @param petList An array of two pets to be in the fight
-     * @param randomInstance The instance of Random to be used
+     * @param randomInstance The instance of RandomGenerator to be used
      */
-    public Fight(List<Pet> petList, Random randomInstance) {
+    public Fight(List<Pet> petList, RandomGenerator randomInstance) {
         this.petList = petList;
         this.random = randomInstance;
     }

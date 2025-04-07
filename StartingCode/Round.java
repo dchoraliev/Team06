@@ -1,18 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Round {
     private List<Pet> petList = new ArrayList<>();
-    private Random random;
+    private RandomGenerator random;
 
 
     /**
      * Creates the round object.
      * @param petList An array of pets to be in the fight
-     * @param randomInstance The instance of Random to be used
+     * @param randomInstance The instance of RandomGenerator to be used
      */
-    public Round(List<Pet> petList, Random randomInstance) {
+    public Round(List<Pet> petList, RandomGenerator randomInstance) {
         this.petList.addAll(petList);
         this.random = randomInstance;
     }
@@ -26,7 +25,7 @@ public class Round {
      */
     public Damage CalculateDamagePerPet(Pet damager, Pet receiver) {
         double conditional = 0;
-        int baseDamage = 5; // todo impliment random here, damage [0-5)
+        int baseDamage = random.generateNum(5);
         if (damager.getPetType() == PetTypes.POWER) {
             if (damager.getSkill() == Skills.ROCK_THROW && receiver.getSkill() == Skills.SCISSORS_POKE) {
                     conditional = baseDamage * 5;

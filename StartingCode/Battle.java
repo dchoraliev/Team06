@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Battle {
     private List<Pet> petList = new ArrayList<>();
     private List<Fight> fightList = new ArrayList<>();
-    private Random random;
+    private RandomGenerator random;
     private int fightNumber;
 
 
@@ -53,10 +52,10 @@ public class Battle {
     /**
      * Creates the battle object.
      * @param petList An array of two pets to be in the battle
-     * @param randomInstance The instance of Random to be used
+     * @param randomInstance The instance of RandomGenerator to be used
      * @param fightNumber The number of fights to play in the Battle, ideally should be odd.
      */
-    public Battle(List<Pet> petList, Random randomInstance, int fightNumber) {
+    public Battle(List<Pet> petList, RandomGenerator randomInstance, int fightNumber) {
         this.random = randomInstance;
         this.fightNumber = fightNumber;
         for (Pet pet : petList) {
