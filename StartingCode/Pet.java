@@ -144,6 +144,7 @@ public class Pet implements Playable {
      */
     @Override
     public void updateHp(double hp) {
+        currentHp = currentHp - hp;
         //Game-controlling classes
     }
 
@@ -208,6 +209,10 @@ public class Pet implements Playable {
      */
     @Override
     public void reset() {
+        currentHp = startingHp;
+        for (Skills skill : Skills.values()) {
+            setRechargeTime(skill, 0);
+        }
         //game-controlling classes
     }
 
