@@ -73,12 +73,9 @@ public class Round {
             }
         }
 
-        Damage damage = new Damage(baseDamage, conditional, damager, receiver);
+        Damage damage = new Damage(baseDamage, conditional, receiver, damager);
         return damage;
     }
-
-    public void ApplyDamage(double damageDealt) {}
-
 
     /**
      * Executes the round.
