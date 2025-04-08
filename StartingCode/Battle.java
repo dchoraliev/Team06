@@ -35,7 +35,7 @@ public class Battle {
         for (Fight fight : fightList) {
             if (fight.getWinner() == petList.get(0)) {
                 petOneWins += 1;
-            } else {
+            } else if (fight.getWinner() == petList.get(1)) {
                 petTwoWins += 1;
             }
         }

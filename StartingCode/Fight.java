@@ -26,7 +26,7 @@ public class Fight {
     public void executeFight() {
         int awake = petList.size();
         int rounds = 0;
-        while (awake != 1) {
+        while (awake > 1) {
                 Round round = new Round(petList, random);
                 rounds += 1;
                 System.out.println("\n_____________________");
