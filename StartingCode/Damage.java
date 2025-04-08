@@ -5,14 +5,14 @@ public class Damage
 	private double randomDamage;
 	private double conditionalDamage;
 
-	private Pet reciever;
+	private Pet receiver;
 	private Pet damager;
 	
-	public Damage(double randomDamage, double conditionalDamage, Pet reciever, Pet damager)
+	public Damage(double randomDamage, double conditionalDamage, Pet receiver, Pet damager)
 	{
 		this.randomDamage = randomDamage;
 		this.conditionalDamage = conditionalDamage;
-		this.reciever = reciever;
+		this.receiver = receiver;
 		this.damager = damager;
 	}
 
@@ -41,11 +41,19 @@ public class Damage
 		return randomDamage + conditionalDamage;
 	}
 
+	/**
+	 * Gets the pet that is dealing the damage
+	 * @return Damage dealer
+	 */
 	public Pet getDamager() {
 		return damager;
 	}
 
-	public Pet getReciever() {
-		return reciever;
+	/**
+	 * Gets the pet that is receiving the damage
+	 * @return Damage receiver
+	 */
+	public Pet getReceiver() {
+		return receiver;
 	}
 }
