@@ -4,7 +4,20 @@ public class Input {
     private Scanner scanner;
     private Pet currentPet;
 
-    public Input() {}
+    public Input()
+    {
+        scanner = new Scanner(System.in);
+    }
+
+    public boolean checkContinue()
+    {
+        System.out.println("Input a 1 to restart the program, or anything else to close the program.");
+        String userInput = scanner.nextLine();
+        if (userInput == "1")
+            return true;
+        else
+            return false;
+    }
 
     public void setCurrentPet(Pet currentPet) {
         this.currentPet = currentPet;
@@ -22,15 +35,21 @@ public class Input {
     // gets a name for a pet from user input
     public String getPetName()
     {
+        System.out.println("Please input a name for your pet.");
+        String userInput = scanner.nextLine();
+        userInput = Utils.convertEnumString(userInput);
 
-        return "Empty";
+        return userInput;
     }
 
     // gets a name for a player from user input
     public String getPlayerName()
     {
+        System.out.println("Please input your player name.");
+        String userInput = scanner.nextLine();
+        userInput = Utils.convertEnumString(userInput);
 
-        return "Empty";
+        return userInput;
     }
 
     // gets the number of fights in the battle from user input
@@ -47,6 +66,12 @@ public class Input {
     {
         System.out.println("Please input the amount of HP your pet will have.");
         double userInput = scanner.nextDouble();
+
+        while(userInput <= 0.0)
+        {
+            System.out.println("Please input a positive number.");
+            userInput = scanner.nextDouble();
+        }
 
         return userInput;
     }
@@ -86,7 +111,7 @@ public class Input {
         if(userInput == 1)
             return PlayerTypes.HUMAN;
         else
-            return PlayerTypes.COMPUTER;   // for now there are no computers, so this will always return 1 because computers are not implemented this iteration
+            return PlayerTypes.HUMAN;   // for now there are no computers, so this will always return human because computers are not implemented this iteration
     }
 
     // determines which skill a pet will use each round

@@ -10,14 +10,27 @@ public class PrimaryController {
     // runs the program
     public void run()
     {
-        for(int i = 0; i < MAX_PETS; i++)
-        {
-            createPet();
-        }
-        createBattle();
+        petList = new ArrayList<>();
+        battleList = new ArrayList<>();
+        randomInstance = RandomGenerator.INSTANCE;
 
-        Battle currentBattle = battleList.getFirst();
-        currentBattle.executeBattle();
+        boolean play = true;
+        while(play == true) {
+            for (int i = 0; i < MAX_PETS; i++) {
+                createPet();
+            }
+            createBattle();
+
+            Battle currentBattle = battleList.getFirst();
+            currentBattle.executeBattle();
+
+            for (int i = 0; i < MAX_PETS; i++) {
+                petList.removeFirst();
+            }
+            battleList.removeFirst();
+            Input boundary = new Input();
+            play = boundary.checkContinue();
+        }
     }
 
     // calls the input class to get the relevant inputs to make a pet class, and then adds it to petList

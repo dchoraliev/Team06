@@ -133,6 +133,7 @@ public class Pet implements Playable {
     @Override
     public Skills chooseSkill() {
         Input input = new Input();
+        input.setCurrentPet(this);
         chosenSkill = input.getSkillType();
         return chosenSkill;
     }
