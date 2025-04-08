@@ -1,5 +1,8 @@
 import java.util.*;
 
+/**
+ * This class receives all user input and handles exceptions.
+ */
 public class Input {
     private Scanner scanner;
     private Pet currentPet;
@@ -9,6 +12,9 @@ public class Input {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     *  Returns true if user wants to start another battle, false otherwise.
+     */
     public boolean checkContinue()
     {
         int userInput = 0;
@@ -32,7 +38,9 @@ public class Input {
         this.currentPet = currentPet;
     }
 
-    // used to set the random seed at the start of the program
+    /**
+     *  Used to set the random seed at the start of the program.
+     */
     public long getRandomSeed()
     {
         long userInput = 0;
@@ -49,7 +57,9 @@ public class Input {
         return userInput;
     }
 
-    // gets a name for a pet from user input
+    /**
+     *  Gets a name for a pet from user input.
+     */
     public String getPetName()
     {
         System.out.println("Please input a name for your pet.");
@@ -59,7 +69,9 @@ public class Input {
         return userInput;
     }
 
-    // gets a name for a player from user input
+    /**
+     *  Gets a name for a player from user input.
+     */
     public String getPlayerName()
     {
         System.out.println("Please input your player name.");
@@ -69,7 +81,9 @@ public class Input {
         return userInput;
     }
 
-    // gets the number of fights in the battle from user input
+    /**
+     *  Gets the number of fights in the battle from user input.
+     */
     public int getFightNumber()
     {
         int userInput = 0;
@@ -91,7 +105,9 @@ public class Input {
         return userInput;
     }
 
-    // gets the starting HP of a single pet from user input
+    /**
+     *  Gets the starting HP of a single pet from user input.
+     */
     public double getStartingHP()
     {
         double userInput = 0;
@@ -115,7 +131,9 @@ public class Input {
         return userInput;
     }
 
-    // gets the type of a pet based on user input
+    /**
+     *  Gets the type of a pet based on user input.
+     */
     public PetTypes getPetType()
     {
         int userInput = 0;
@@ -143,7 +161,10 @@ public class Input {
             return PetTypes.INTELLIGENCE;
     }
 
-    // determines if a pet is controlled by a player or not based on user input
+    /**
+     *  Determines if a pet is controlled by a player or not based on user input.
+     *  For now, all pets are controlled by user input, so this will always return HUMAN type.
+     */
     public PlayerTypes getPlayerType()
     {
         int userInput = 0;
@@ -165,10 +186,13 @@ public class Input {
         if (userInput == 1)
             return PlayerTypes.HUMAN;
         else
-            return PlayerTypes.HUMAN;   // for now there are no computers, so this will always return human because computers are not implemented this iteration
+            return PlayerTypes.HUMAN;
     }
 
-    // determines which skill a pet will use each round
+    /**
+     *  Determines which skill a pet will use each round based on user input.
+     *  Checks for skill recharge times first to make sure the input is valid.
+     */
     public Skills getSkillType()
     {
         int userInput = 0;
