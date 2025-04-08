@@ -55,7 +55,7 @@ public class Input {
     // gets the number of fights in the battle from user input
     public int getFightNumber()
     {
-        System.out.println("Please input an integer of fights to happen in the battle");
+        System.out.println("Please input an number of fights to happen in the battle");
         int userInput = scanner.nextInt();
 
         return userInput;
@@ -64,7 +64,7 @@ public class Input {
     // gets the starting HP of a single pet from user input
     public double getStartingHP()
     {
-        System.out.println("Please input the amount of HP your pet will have.");
+        System.out.println("Please input a decimal number for the amount of HP your pet will have.");
         double userInput = scanner.nextDouble();
 
         while(userInput <= 0.0)
@@ -117,7 +117,7 @@ public class Input {
     // determines which skill a pet will use each round
     public Skills getSkillType()
     {
-        System.out.println("Please input a number to determine the move of your pet. (1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut");
+        System.out.println("Please input a number to determine the move of " + currentPet.getPetName() + ". (1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut");
         int userInput = scanner.nextInt();
         int rockCooldown = currentPet.getSkillRechargeTime(Skills.ROCK_THROW);
         int scissorCooldown = currentPet.getSkillRechargeTime(Skills.SCISSORS_POKE);
