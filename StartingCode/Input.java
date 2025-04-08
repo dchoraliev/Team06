@@ -58,6 +58,12 @@ public class Input {
         System.out.println("Please input an number of fights to happen in the battle");
         int userInput = scanner.nextInt();
 
+        while(userInput <= 0)
+        {
+            System.out.println("Please input a positive number.");
+            userInput = scanner.nextInt();
+        }
+
         return userInput;
     }
 
@@ -133,7 +139,7 @@ public class Input {
         while(validInput == false)
         {
             if (userInput == 1 || userInput == 2 || userInput == 3)
-                System.out.println("Skill currently on cooldown.");
+                System.out.println("That skill is currently on cooldown, please choose a different one.");
             else
                 System.out.println("Please enter a valid number.");
             userInput = scanner.nextInt();
