@@ -3,9 +3,7 @@ import java.util.List;
 
 public class Fight {
     private List<Pet> petList;
-    private List<Round> roundList = new ArrayList<>();
     private RandomGenerator random;
-    private boolean isFinished;
     private Pet roundWinner;
 
 

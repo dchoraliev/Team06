@@ -16,7 +16,7 @@ public class Battle {
         for (int i = 0; i < fightNumber; i++) {
             Fight fight = new Fight(petList, random);
             int fightNum = fightList.size() + 1;
-            System.out.println("Executing Fight " + fightNum + "/" + fightNumber);
+            System.out.println("\nExecuting Fight " + fightNum + "/" + fightNumber);
             System.out.println("Pets in fight:");
             for (Pet pet : petList) {
                 System.out.println("Name: " + pet.getPetName() + ", Type: " + pet.getPetType());
@@ -43,10 +43,10 @@ public class Battle {
         System.out.println("Pet " + petList.get(0).getPetName() + " wins: " + petOneWins);
         System.out.println("Pet " + petList.get(1).getPetName() + " wins: " + petTwoWins);
         if (petOneWins > petTwoWins) {
-            System.out.println("Pet " + petList.get(0).getPetName() + " won the battle!");
+            System.out.println("\n_____________________" + "Pet " + petList.get(0).getPetName() + " won the battle!" + "\n_____________________");
             return petList.get(0);
         } else if (petTwoWins > petOneWins) {
-            System.out.println("Pet " + petList.get(1).getPetName() + " won the battle!");
+            System.out.println("\n_____________________" + "Pet " + petList.get(1).getPetName() + " won the battle!" + "\n_____________________");
             return petList.get(1);
         }
         else {
