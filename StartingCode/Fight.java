@@ -29,6 +29,7 @@ public class Fight {
         while (awake != 1) {
                 Round round = new Round(petList, random);
                 rounds += 1;
+                System.out.println("\n_____________________");
                 System.out.println("Playing round #" + rounds);
                 for (Pet pet1 : petList) {
                     System.out.println(pet1.getPetName() + "\nHP: " + pet1.getCurrentHp());
