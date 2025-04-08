@@ -15,7 +15,8 @@ public class Battle {
     public Pet executeBattle() {
         for (int i = 0; i < fightNumber; i++) {
             Fight fight = new Fight(petList, random);
-            System.out.println("Executing Fight " + fightList.size()+1 + "/" + fightNumber);
+            int fightNum = fightList.size() + 1;
+            System.out.println("Executing Fight " + fightNum + "/" + fightNumber);
             System.out.println("Pets in fight:");
             for (Pet pet : petList) {
                 System.out.println("Name: " + pet.getPetName() + ", Type: " + pet.getPetType());
