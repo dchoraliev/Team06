@@ -109,7 +109,7 @@ public class Round {
         }
 
         for (Damage damage : damageList) {
-            Pet receiver = damage.getReciever();
+            Pet receiver = damage.getReceiver();
             Pet damager = damage.getDamager();
             receiver.updateHp(damage.calculateTotalDamage());
             System.out.println(damager.getPetName() + " hurt " + receiver.getPetName() + " using " + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
