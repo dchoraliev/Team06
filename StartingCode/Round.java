@@ -35,15 +35,15 @@ public class Round {
                 conditional = baseDamage * 5;
             }
         } else if (damager.getPetType() == PetTypes.SPEED) {
-            if (damager.getSkill() == Skills.ROCK_THROW && receiver.calculateHpPercent() >= .75) {
+            if (damager.getSkill() == Skills.ROCK_THROW && receiver.calculateHpPercent() >= 75) {
                 if (receiver.getSkill() == Skills.SCISSORS_POKE || receiver.getSkill() == Skills.PAPER_CUT) {
                     conditional = 12.5;
                 }
-            } else if (damager.getSkill() == Skills.SCISSORS_POKE && receiver.calculateHpPercent() >= .25 && receiver.calculateHpPercent() < .75) {
+            } else if (damager.getSkill() == Skills.SCISSORS_POKE && receiver.calculateHpPercent() >= 25 && receiver.calculateHpPercent() < 75) {
                 if (receiver.getSkill() == Skills.ROCK_THROW || receiver.getSkill() == Skills.PAPER_CUT) {
                     conditional = 12.5;
                 }
-            } else if (damager.getSkill() == Skills.PAPER_CUT && receiver.calculateHpPercent() >= 0 && receiver.calculateHpPercent() < .25) {
+            } else if (damager.getSkill() == Skills.PAPER_CUT && receiver.calculateHpPercent() >= 0 && receiver.calculateHpPercent() < 25) {
                 if (receiver.getSkill() == Skills.SCISSORS_POKE || receiver.getSkill() == Skills.ROCK_THROW) {
                     conditional = 12.5;
                 }
