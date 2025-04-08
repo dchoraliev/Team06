@@ -1,5 +1,8 @@
 import java.util.*;
 
+/**
+ * This class is the game's primary controller which creates pets, runs the game, and creates battles.
+ */
 public class PrimaryController {
     private final int MAX_PETS = 2;
     private List<Pet> petList;
@@ -7,7 +10,9 @@ public class PrimaryController {
     private List<Battle> battleList;
     public PrimaryController() {}
 
-    // runs the program
+    /**
+     * This method runs the whole game.
+     */
     public void run()
     {
         petList = new ArrayList<>();
@@ -33,7 +38,9 @@ public class PrimaryController {
         }
     }
 
-    // calls the input class to get the relevant inputs to make a pet class, and then adds it to petList
+    /**
+     * Creates a Pet from the Pet class with all its attributes.
+     */
     public void createPet()
     {
         Input boundary = new Input();
@@ -46,7 +53,9 @@ public class PrimaryController {
         petList.add(newPet);
     }
 
-    // calls the input class to get the relevant inputs to make a battle class, and then adds it to battleList
+    /**
+     * Creates a battle with all necessary inputs.
+     */
     public void createBattle()
     {
         Input boundary = new Input();
