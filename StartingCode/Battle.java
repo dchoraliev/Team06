@@ -23,9 +23,11 @@ public class Battle {
             }
             fight.executeFight();
             fightList.add(fight);
+            System.out.println(fight.getWinner() + " won fight " + fightNum + "!");
             for (Pet pet : petList) {
                 pet.reset();
             }
+
         }
 
         int petOneWins = 0;
@@ -38,13 +40,13 @@ public class Battle {
             }
         }
 
-        System.out.println("Pet " + petList.get(0).getPetName() + "wins: " + petOneWins);
-        System.out.println("Pet " + petList.get(1).getPetName() + "wins: " + petTwoWins);
+        System.out.println("Pet " + petList.get(0).getPetName() + " wins: " + petOneWins);
+        System.out.println("Pet " + petList.get(1).getPetName() + " wins: " + petTwoWins);
         if (petOneWins > petTwoWins) {
-            System.out.println("Pet " + petList.get(0).getPetName() + " won!");
+            System.out.println("Pet " + petList.get(0).getPetName() + " won the battle!");
             return petList.get(0);
         } else {
-            System.out.println("Pet " + petList.get(1).getPetName() + " won!");
+            System.out.println("Pet " + petList.get(1).getPetName() + " won the battle!");
             return petList.get(1);
         }
     }
