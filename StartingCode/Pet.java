@@ -213,7 +213,6 @@ public class Pet implements Playable {
         for (Skills skill : Skills.values()) {
             setRechargeTime(skill, 0);
         }
-        //game-controlling classes
     }
 
     /**
