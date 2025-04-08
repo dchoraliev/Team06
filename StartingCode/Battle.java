@@ -45,9 +45,13 @@ public class Battle {
         if (petOneWins > petTwoWins) {
             System.out.println("Pet " + petList.get(0).getPetName() + " won the battle!");
             return petList.get(0);
-        } else {
+        } else if (petTwoWins > petOneWins) {
             System.out.println("Pet " + petList.get(1).getPetName() + " won the battle!");
             return petList.get(1);
+        }
+        else {
+            System.out.println("It was a tie... :(\nMaybe try having an odd number of fights next time");
+            return null;
         }
     }
 
