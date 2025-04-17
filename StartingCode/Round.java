@@ -106,7 +106,7 @@ public class Round {
      * 3. Set skill recharge times
      * 4. Apply damage and set health for each pet.
      */
-    public void executeRound() {
+    public List<Damage> executeRound() {
         List<Damage> damageList = new ArrayList<>();
 
         for (Pet pet : petList) {
@@ -137,6 +137,8 @@ public class Round {
             System.out.println("\n" + damager.getPetName() + " hurt " + receiver.getPetName() + " using " + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
             System.out.println("Random Damage: " + damage.getRandomDamage() + "\nConditional Damage: " + damage.getConditionalDamage());
         }
+
+        return damageList;
 
     };
 }

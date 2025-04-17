@@ -5,6 +5,7 @@ public class Fight {
     private List<Pet> petList;
     private RandomGenerator random;
     private Pet roundWinner;
+    private List<List<Damage>> roundsDamage = new ArrayList<>();
 
 
     /**
@@ -35,7 +36,8 @@ public class Fight {
                         System.out.println(skill.toString() + " CD: " + pet1.getSkillRechargeTime(skill));
                     }
                 }
-                round.executeRound();
+                List<Damage> damageList = round.executeRound();
+                roundsDamage.add(damageList);
                 for (Pet pet : petList) {
                     if (!pet.isAwake()) {
                         awake -= 1;
