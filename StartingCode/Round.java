@@ -33,6 +33,10 @@ public class Round {
                     conditional = baseDamage * 5;
             } else if (damager.getSkill() == Skills.PAPER_CUT && receiver.getSkill() == Skills.ROCK_THROW) {
                 conditional = baseDamage * 5;
+            } else if (damager.getSkill() == Skills.SHOOT_THE_MOON && receiver.getSkill() == damager.getSkillPrediction()) {
+                conditional += 20;
+            } else if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
+                // todo
             }
         } else if (damager.getPetType() == PetTypes.SPEED) {
             if (damager.getSkill() == Skills.ROCK_THROW && receiver.calculateHpPercent() >= 75) {
@@ -47,6 +51,10 @@ public class Round {
                 if (receiver.getSkill() == Skills.SCISSORS_POKE || receiver.getSkill() == Skills.ROCK_THROW) {
                     conditional = 12.5;
                 }
+            } else if (damager.getSkill() == Skills.SHOOT_THE_MOON && receiver.getSkill() == damager.getSkillPrediction()) {
+                conditional += 20;
+            } else if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
+                // todo
             }
         } else { // petType = Intelligence
             if (damager.getSkill() == Skills.ROCK_THROW) {
@@ -56,11 +64,17 @@ public class Round {
                 if (receiver.getSkillRechargeTime(Skills.ROCK_THROW) > 0) {
                     conditional += 2;
                 }
+                if (receiver.getSkillRechargeTime(Skills.SHOOT_THE_MOON) > 0) {
+                    conditional += 2;
+                }
             } else if (damager.getSkill() == Skills.SCISSORS_POKE) {
                 if (receiver.getSkillRechargeTime(Skills.PAPER_CUT) > 0) {
                     conditional += 3;
                 }
                 if (receiver.getSkillRechargeTime(Skills.SCISSORS_POKE) > 0) {
+                    conditional += 2;
+                }
+                if (receiver.getSkillRechargeTime(Skills.SHOOT_THE_MOON) > 0) {
                     conditional += 2;
                 }
             } else if (damager.getSkill() == Skills.PAPER_CUT) {
@@ -70,6 +84,13 @@ public class Round {
                 if (receiver.getSkillRechargeTime(Skills.PAPER_CUT) > 0) {
                     conditional += 2;
                 }
+                if (receiver.getSkillRechargeTime(Skills.SHOOT_THE_MOON) > 0) {
+                    conditional += 2;
+                }
+            } else if (damager.getSkill() == Skills.SHOOT_THE_MOON && receiver.getSkill() == damager.getSkillPrediction()) {
+                conditional += 20;
+            } else if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
+                // todo
             }
         }
 
@@ -102,7 +123,11 @@ public class Round {
 
         for (Pet pet : petList) {
             pet.decrementRechargeTimes();
-            pet.setRechargeTime(pet.getSkill(), 1);
+            if (pet.getSkill() == Skills.REVERSAL_OF_FORTUNE || pet.getSkill() == Skills.SHOOT_THE_MOON) {
+                pet.setRechargeTime(pet.getSkill(), 6);
+            } else {
+                pet.setRechargeTime(pet.getSkill(), 1);
+            }
         }
 
         for (Damage damage : damageList) {

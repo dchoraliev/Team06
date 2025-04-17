@@ -172,7 +172,7 @@ public class Pet implements Playable {
     @Override
     public Skills getSkillPrediction() {
         return null;
-    }
+    } // todo this iteration, just need to prompt the user for skill prediction and return it
 
     /**
      *
