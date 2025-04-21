@@ -2,8 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Round {
-    private List<Pet> petList = new ArrayList<>();
-    private RandomGenerator random;
+    private final List<Pet> petList = new ArrayList<>();
+    private final RandomGenerator random;
+    private final List<List<Damage>> roundHistory = new ArrayList<>();
+    private final List<Damage> previousRoundDamages = new ArrayList<>();
+    private List<Pet> awakeAtRoundStart = new ArrayList<>();
+
 
 
     /**
@@ -16,6 +20,20 @@ public class Round {
         this.random = randomInstance;
     }
 
+    /**
+     *
+     * @return A history of the rounds.
+     */
+    public List<List<Damage>> getRoundHistory() {
+        return roundHistory;
+    }
+
+    /**
+     * @return A list of pets that are currently awake.
+     */
+    public List<Pet> getAwakeAtRoundStart() {
+        return awakeAtRoundStart;
+    }
 
     /**
      * Calculates the damage to be done to the receiver by the damager. The actual damage is applied elsewhere.
@@ -23,20 +41,18 @@ public class Round {
      * @param receiver The pet being damaged
      * @return the damage object with info about the damager, receiver, base damage, and conditional damage
      */
-    public Damage CalculateDamagePerPet(Pet damager, Pet receiver) {
+    public Damage CalculateDamagePerPet(Pet damager, Pet receiver, List<Damage> previousRoundDamages) {
         double conditional = 0;
         int baseDamage = random.generateNum(5);
         if (damager.getPetType() == PetTypes.POWER) {
             if (damager.getSkill() == Skills.ROCK_THROW && receiver.getSkill() == Skills.SCISSORS_POKE) {
-                    conditional = baseDamage * 5;
+                conditional = baseDamage * 5;
             } else if (damager.getSkill() == Skills.SCISSORS_POKE && receiver.getSkill() == Skills.PAPER_CUT) {
-                    conditional = baseDamage * 5;
+                conditional = baseDamage * 5;
             } else if (damager.getSkill() == Skills.PAPER_CUT && receiver.getSkill() == Skills.ROCK_THROW) {
                 conditional = baseDamage * 5;
             } else if (damager.getSkill() == Skills.SHOOT_THE_MOON && receiver.getSkill() == damager.getSkillPrediction()) {
                 conditional += 20;
-            } else if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-                // todo
             }
         } else if (damager.getPetType() == PetTypes.SPEED) {
             if (damager.getSkill() == Skills.ROCK_THROW && receiver.calculateHpPercent() >= 75) {
@@ -53,9 +69,8 @@ public class Round {
                 }
             } else if (damager.getSkill() == Skills.SHOOT_THE_MOON && receiver.getSkill() == damager.getSkillPrediction()) {
                 conditional += 20;
-            } else if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-                // todo
             }
+
         } else { // petType = Intelligence
             if (damager.getSkill() == Skills.ROCK_THROW) {
                 if (receiver.getSkillRechargeTime(Skills.SCISSORS_POKE) > 0) {
@@ -89,14 +104,43 @@ public class Round {
                 }
             } else if (damager.getSkill() == Skills.SHOOT_THE_MOON && receiver.getSkill() == damager.getSkillPrediction()) {
                 conditional += 20;
-            } else if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-                // todo
             }
+        }
+
+        // Reversal of Fortune Logic (applies to all pet types)
+        if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
+            double damageDeltaSum = 0;
+            for (Damage past : previousRoundDamages) {
+                if (past.getDamager() == damager) {
+                    damageDeltaSum += past.getRandomDamage();
+                }
+                if (past.getReceiver() == damager) {
+                    damageDeltaSum -= past.getRandomDamage();
+                }
+            }
+
+            // Apply reduction to both base and conditional
+            baseDamage = Math.max(0, baseDamage - (int) damageDeltaSum);
+            conditional = Math.max(0, conditional - damageDeltaSum);
         }
 
         Damage damage = new Damage(baseDamage, conditional, receiver, damager);
         return damage;
+
+
     }
+
+    private Pet getNextAliveTarget(Pet attacker) {
+        int index = petList.indexOf(attacker);
+        int size = petList.size();
+
+        for (int i = 1; i < size; i++) {
+            Pet target = petList.get((index + i) % size);
+            if (target.isAwake()) return target;
+        }
+        return attacker;
+    }
+
 
     /**
      * Executes the round.
@@ -108,37 +152,73 @@ public class Round {
      */
     public List<Damage> executeRound() {
         List<Damage> damageList = new ArrayList<>();
+        List<Pet> awakeAtRoundStart = new ArrayList<>();
 
         for (Pet pet : petList) {
-            pet.chooseSkill();
+            if (pet.isAwake()) {
+                awakeAtRoundStart.add(pet);
+            }
+        }
+        this.awakeAtRoundStart = new ArrayList<>(awakeAtRoundStart);
+
+        for (Pet pet : petList) {
+            if (pet.isAwake()) {
+                pet.chooseSkill();
+            }
         }
 
-        for (Pet pet : petList) {
-            for (Pet pet2 : petList) {
-                if (pet != pet2) {
-                    damageList.add(CalculateDamagePerPet(pet, pet2));
-                }
+        for (Pet damager : petList) {
+            if (!damager.isAwake())
+            {
+                continue;
             }
+
+            Pet receiver = getNextAliveTarget(damager);
+            if (receiver == damager)
+            {
+                continue;
+            }
+
+            Damage damage = CalculateDamagePerPet(damager, receiver, previousRoundDamages);
+            damageList.add(damage);
         }
 
         for (Pet pet : petList) {
             pet.decrementRechargeTimes();
-            if (pet.getSkill() == Skills.REVERSAL_OF_FORTUNE || pet.getSkill() == Skills.SHOOT_THE_MOON) {
-                pet.setRechargeTime(pet.getSkill(), 6);
+
+            Skills skill = pet.getSkill();
+            if (skill == Skills.REVERSAL_OF_FORTUNE || skill == Skills.SHOOT_THE_MOON) {
+                pet.setRechargeTime(skill, 6);
             } else {
-                pet.setRechargeTime(pet.getSkill(), 1);
+                pet.setRechargeTime(skill, 1);
             }
         }
 
         for (Damage damage : damageList) {
             Pet receiver = damage.getReceiver();
             Pet damager = damage.getDamager();
-            receiver.updateHp(damage.calculateTotalDamage());
-            System.out.println("\n" + damager.getPetName() + " hurt " + receiver.getPetName() + " using " + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
-            System.out.println("Random Damage: " + damage.getRandomDamage() + "\nConditional Damage: " + damage.getConditionalDamage());
+
+            if (receiver.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
+                damager.updateHp(damage.calculateTotalDamage());
+                System.out.println("\n" + receiver.getPetName() + " used REVERSAL_OF_FORTUNE and reflected "
+                        + damage.calculateTotalDamage() + " damage to " + damager.getPetName() + ".");
+            } else {
+                receiver.updateHp(damage.calculateTotalDamage());
+                System.out.println("\n" + damager.getPetName() + " hurt " + receiver.getPetName() + " using "
+                        + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
+            }
+
+            System.out.println("Random Damage: " + damage.getRandomDamage()
+                    + "\nConditional Damage: " + damage.getConditionalDamage());
         }
 
-        return damageList;
+        roundHistory.add(new ArrayList<>(damageList));
+        previousRoundDamages.addAll(damageList);
 
-    };
+        return damageList;
+    }
+
+
+
+
 }
