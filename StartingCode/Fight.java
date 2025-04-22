@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Fight {
     private List<Pet> petList;
@@ -24,10 +25,12 @@ public class Fight {
      */
     public void executeFight() {
         int awake = petList.size();
+        Round lastRound = null;
         int rounds = 0;
         List<Pet> sleepingPets = new ArrayList<>();
         while (awake > 1) {
                 Round round = new Round(petList, random);
+                lastRound = round;
                 rounds += 1;
                 System.out.println("\n_____________________");
                 System.out.println("Playing round #" + rounds);
@@ -47,11 +50,57 @@ public class Fight {
                 }
         }
 
-        for (Pet pet : petList) {
-            if (pet.isAwake()) {
-                roundWinner = pet;
+        if (lastRound != null) {
+            List<Pet> candidates = lastRound.getAwakeAtRoundStart();
+
+            double maxHp = candidates.stream()
+                    .mapToDouble(Pet::getCurrentHp)
+                    .max()
+                    .orElse(0);
+
+            List<Pet> topPets = candidates.stream()
+                    .filter(p -> p.getCurrentHp() == maxHp)
+                    .toList();
+
+            if (topPets.size() == 1) {
+                roundWinner = topPets.get(0);
+            } else {
+                System.out.println("⚔ It's a tie between:");
+                for (Pet p : topPets) {
+                    System.out.println("- " + p.getPetName() + " (" + p.getCurrentHp() + " HP)");
+                }
+
+                int index = random.generateNum(topPets.size());
+                roundWinner = topPets.get(index);
+                System.out.println("🎲 Randomly selected winner: " + roundWinner.getPetName());
             }
         }
+        if (lastRound != null) {
+            List<Pet> candidates = lastRound.getAwakeAtRoundStart();
+
+            double maxHp = candidates.stream()
+                    .mapToDouble(Pet::getCurrentHp)
+                    .max()
+                    .orElse(0);
+
+            List<Pet> topPets = candidates.stream()
+                    .filter(p -> p.getCurrentHp() == maxHp)
+                    .toList();
+
+            if (topPets.size() == 1) {
+                roundWinner = topPets.get(0);
+            } else {
+                System.out.println("It's a tie between:");
+                for (Pet p : topPets) {
+                    System.out.println("- " + p.getPetName() + " (" + p.getCurrentHp() + " HP)");
+                }
+
+                int index = random.generateNum(topPets.size());
+                roundWinner = topPets.get(index);
+                System.out.println("Randomly selected winner: " + roundWinner.getPetName());
+            }
+        }
+
     }
 
 

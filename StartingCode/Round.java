@@ -109,35 +109,30 @@ public class Round {
 
         // Reversal of Fortune Logic (applies to all pet types)
         if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-            double damageDealtToTarget = 0;
-            double damageTakenFromOthers = 0;
+            double totalRandomDealt = 0;
+            double totalRandomTaken = 0;
 
             for (Damage past : previousRoundDamages) {
-                if (past.getDamager() == damager && past.getReceiver() == receiver) {
-                    damageDealtToTarget += past.getRandomDamage();
+                if (past.getDamager() == damager) {
+                    totalRandomDealt += past.getRandomDamage();
                 }
-
                 if (past.getReceiver() == damager) {
-                    damageTakenFromOthers += past.getRandomDamage();
+                    totalRandomTaken += past.getRandomDamage();
                 }
             }
 
-            double damageDelta = damageDealtToTarget - damageTakenFromOthers;
+            double damageDelta = totalRandomDealt - totalRandomTaken;
 
-            // Print debug info
             System.out.println("[Reversal] " + damager.getPetName() + "'s delta = " + damageDelta
-                    + " (Dealt to " + receiver.getPetName() + ": " + damageDealtToTarget
-                    + ", Taken from others: " + damageTakenFromOthers + ")");
+                    + " (Total Dealt: " + totalRandomDealt
+                    + ", Total Taken: " + totalRandomTaken + ")");
 
             baseDamage = Math.max(0, baseDamage - (int) damageDelta);
             conditional = Math.max(0, conditional - damageDelta);
         }
 
-
         Damage damage = new Damage(baseDamage, conditional, receiver, damager);
         return damage;
-
-
     }
 
     private Pet getNextAliveTarget(Pet attacker) {
