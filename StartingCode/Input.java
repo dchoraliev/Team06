@@ -6,6 +6,7 @@ import java.util.*;
 public class Input {
     private Scanner scanner;
     private Pet currentPet;
+    private Pet targetPet;
 
     public Input()
     {
@@ -37,6 +38,11 @@ public class Input {
 
     public void setCurrentPet(Pet currentPet) {
         this.currentPet = currentPet;
+    }
+
+    public void setTargetPet(Pet targetPet)
+    {
+        this.targetPet = targetPet;
     }
 
     /**
@@ -210,32 +216,23 @@ public class Input {
         boolean validType = false;
         while(validType == false) {
             try {
-                System.out.println("Please input a number to determine the move of " + currentPet.getPetName() + ". (1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut");
+                System.out.println("Please input a number to determine the move of " + currentPet.getPetName() + ". (1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut, 4 = Shoot the Moon, 5 = Reversal of Fortune");
                 userInput = scanner.nextInt();
-                int rockCooldown = currentPet.getSkillRechargeTime(Skills.ROCK_THROW);
-                int scissorCooldown = currentPet.getSkillRechargeTime(Skills.SCISSORS_POKE);
-                int paperCooldown = currentPet.getSkillRechargeTime(Skills.PAPER_CUT);
                 boolean validInput = false;
-                if (userInput == 1 && rockCooldown == 0)
-                    validInput = true;
-                if (userInput == 2 && scissorCooldown == 0)
-                    validInput = true;
-                if (userInput == 3 && paperCooldown == 0)
-                    validInput = true;
+                if (userInput >= 1 && userInput <= 5)
+                    if(currentPet.getSkillRechargeTime(Skills.values()[userInput - 1]) == 0)
+                        validInput = true;
 
                 while (validInput == false) {
-                    if (userInput == 1 || userInput == 2 || userInput == 3)
+                    if (userInput >= 1 && userInput <= 5)
                         System.out.println("That skill is currently on cooldown, please choose a different one.");
                     else
                         System.out.println("Please enter a valid number.");
                     userInput = scanner.nextInt();
 
-                    if (userInput == 1 && rockCooldown == 0)
-                        validInput = true;
-                    if (userInput == 2 && scissorCooldown == 0)
-                        validInput = true;
-                    if (userInput == 3 && paperCooldown == 0)
-                        validInput = true;
+                    if (userInput >= 1 && userInput <= 5)
+                        if(currentPet.getSkillRechargeTime(Skills.values()[userInput - 1]) == 0)
+                            validInput = true;
                 }
 
                 validType = true;
@@ -244,13 +241,48 @@ public class Input {
                 scanner.nextLine();
             }
         }
-        if(userInput == 1)
-            return Skills.ROCK_THROW;
-        if(userInput == 2)
-            return Skills.SCISSORS_POKE;
-        if(userInput == 3)
-            return Skills.PAPER_CUT;
-        return null;
+
+        return Skills.values()[userInput - 1];
+    }
+
+
+    /**
+     *  Used for a pet to predict another pet's skill in the case of using Shoot the Moon
+     *  Checks the opponent's skill cooldowns first to make sure the prediction is possible
+     */
+    public Skills predictSkill()
+    {
+        int userInput = 0;
+        boolean validType = false;
+        while(validType == false) {
+            try {
+                System.out.println("Please input a number to predict the move of " + targetPet.getPetName() + ". (1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut, 4 = Shoot the Moon, 5 = Reversal of Fortune");
+                userInput = scanner.nextInt();
+                boolean validInput = false;
+                if (userInput >= 1 && userInput <= 5)
+                    if(targetPet.getSkillRechargeTime(Skills.values()[userInput - 1]) == 0)
+                        validInput = true;
+
+                while (validInput == false) {
+                    if (userInput >= 1 && userInput <= 5)
+                        System.out.println("That skill is currently on cooldown for your target, please choose a different one.");
+                    else
+                        System.out.println("Please enter a valid number.");
+                    userInput = scanner.nextInt();
+
+                    if (userInput >= 1 && userInput <= 5)
+                        if(targetPet.getSkillRechargeTime(Skills.values()[userInput - 1]) == 0)
+                            validInput = true;
+                }
+
+                validType = true;
+            } catch (Exception e) {
+                System.out.println("Invalid input.");
+                scanner.nextLine();
+            }
+        }
+
+        return Skills.values()[userInput - 1];
     }
 
 
