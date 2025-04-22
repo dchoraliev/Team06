@@ -206,15 +206,22 @@ public class Input {
             return PlayerTypes.HUMAN;
     }
 
-    public int getNumberPlayers()
-    {
+    public int getNumberPlayers() {
         int userInput = 0;
-        while (userInput <= 1) {
-            System.out.println("Please input a number to determine the number of players.");
-            userInput = scanner.nextInt();
-            if (userInput <= 1)
-            {
-                System.out.println("Please enter a valid number");
+        boolean validInput = false;
+        while (validInput == false) {
+            try {
+                System.out.println("Please input a number to determine the number of players.");
+                while (userInput <= 1) {
+                    userInput = scanner.nextInt();
+                    if (userInput <= 1) {
+                        System.out.println("Please enter a valid number");
+                    }
+                    validInput = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input.");
+                scanner.nextLine();
             }
         }
         return userInput;
@@ -230,7 +237,8 @@ public class Input {
         boolean validType = false;
         while(validType == false) {
             try {
-                System.out.println("Please input a number to determine the move of " + currentPet.getPetName() + ". (1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut, 4 = Shoot the Moon, 5 = Reversal of Fortune");
+                System.out.println("Please input a number to determine the move of " + currentPet.getPetName() + ".");
+                System.out.println("1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut, 4 = Shoot the Moon, 5 = Reversal of Fortune");
                 userInput = scanner.nextInt();
                 boolean validInput = false;
                 if (userInput >= 1 && userInput <= 5)
@@ -270,10 +278,23 @@ public class Input {
         boolean validType = false;
         while(validType == false) {
             try {
-                System.out.println("Please input a number to predict the move of " + targetPet.getPetName() + ". (1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut, 4 = Shoot the Moon, 5 = Reversal of Fortune");
+                System.out.println("Please input a number to predict the move of the target pet.");
+                System.out.println("1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut, 4 = Shoot the Moon, 5 = Reversal of Fortune");
                 userInput = scanner.nextInt();
                 boolean validInput = false;
                 if (userInput >= 1 && userInput <= 5)
+                    validInput = true;
+
+                while (validInput == false) {
+                    System.out.println("Please enter a valid number.");
+                    userInput = scanner.nextInt();
+
+                    if (userInput >= 1 && userInput <= 5)
+                        validInput = true;
+                }
+
+                // the code below could be used to check for a valid input if the target pet object is passed to the class first
+                /*if (userInput >= 1 && userInput <= 5)
                     if(targetPet.getSkillRechargeTime(Skills.values()[userInput - 1]) == 0)
                         validInput = true;
 
@@ -287,7 +308,7 @@ public class Input {
                     if (userInput >= 1 && userInput <= 5)
                         if(targetPet.getSkillRechargeTime(Skills.values()[userInput - 1]) == 0)
                             validInput = true;
-                }
+                }*/
 
                 validType = true;
             } catch (Exception e) {
@@ -295,7 +316,6 @@ public class Input {
                 scanner.nextLine();
             }
         }
-
         return Skills.values()[userInput - 1];
     }
 

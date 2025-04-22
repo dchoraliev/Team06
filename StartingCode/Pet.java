@@ -173,7 +173,7 @@
          */
         @Override
         public Skills getSkillPrediction() {
-            Scanner scanner = new Scanner(System.in);
+            /*Scanner scanner = new Scanner(System.in);
 
             System.out.println("\nPredict which skill your opponent will use: ");
             System.out.println("1. ROCK_THROW");
@@ -194,7 +194,8 @@
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Please enter a numeric value.");
                 }
-            }
+            }*/
+            return null;    //implemented in Input class instead
         } // todo this iteration, just need to prompt the user for skill prediction and return it
 
         /**
