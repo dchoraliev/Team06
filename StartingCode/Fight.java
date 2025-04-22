@@ -49,32 +49,6 @@ public class Fight {
                     }
                 }
         }
-
-        if (lastRound != null) {
-            List<Pet> candidates = lastRound.getAwakeAtRoundStart();
-
-            double maxHp = candidates.stream()
-                    .mapToDouble(Pet::getCurrentHp)
-                    .max()
-                    .orElse(0);
-
-            List<Pet> topPets = candidates.stream()
-                    .filter(p -> p.getCurrentHp() == maxHp)
-                    .toList();
-
-            if (topPets.size() == 1) {
-                roundWinner = topPets.get(0);
-            } else {
-                System.out.println("⚔ It's a tie between:");
-                for (Pet p : topPets) {
-                    System.out.println("- " + p.getPetName() + " (" + p.getCurrentHp() + " HP)");
-                }
-
-                int index = random.generateNum(topPets.size());
-                roundWinner = topPets.get(index);
-                System.out.println("🎲 Randomly selected winner: " + roundWinner.getPetName());
-            }
-        }
         if (lastRound != null) {
             List<Pet> candidates = lastRound.getAwakeAtRoundStart();
 
