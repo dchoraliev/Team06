@@ -109,20 +109,30 @@ public class Round {
 
         // Reversal of Fortune Logic (applies to all pet types)
         if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-            double damageDeltaSum = 0;
+            double damageDealtToTarget = 0;
+            double damageTakenFromOthers = 0;
+
             for (Damage past : previousRoundDamages) {
-                if (past.getDamager() == damager) {
-                    damageDeltaSum += past.getRandomDamage();
+                if (past.getDamager() == damager && past.getReceiver() == receiver) {
+                    damageDealtToTarget += past.getRandomDamage();
                 }
+
                 if (past.getReceiver() == damager) {
-                    damageDeltaSum -= past.getRandomDamage();
+                    damageTakenFromOthers += past.getRandomDamage();
                 }
             }
 
-            // Apply reduction to both base and conditional
-            baseDamage = Math.max(0, baseDamage - (int) damageDeltaSum);
-            conditional = Math.max(0, conditional - damageDeltaSum);
+            double damageDelta = damageDealtToTarget - damageTakenFromOthers;
+
+            // Print debug info
+            System.out.println("[Reversal] " + damager.getPetName() + "'s delta = " + damageDelta
+                    + " (Dealt to " + receiver.getPetName() + ": " + damageDealtToTarget
+                    + ", Taken from others: " + damageTakenFromOthers + ")");
+
+            baseDamage = Math.max(0, baseDamage - (int) damageDelta);
+            conditional = Math.max(0, conditional - damageDelta);
         }
+
 
         Damage damage = new Damage(baseDamage, conditional, receiver, damager);
         return damage;
@@ -198,16 +208,10 @@ public class Round {
             Pet receiver = damage.getReceiver();
             Pet damager = damage.getDamager();
 
-            if (receiver.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-                damager.updateHp(damage.calculateTotalDamage());
-                System.out.println("\n" + receiver.getPetName() + " used REVERSAL_OF_FORTUNE and reflected "
-                        + damage.calculateTotalDamage() + " damage to " + damager.getPetName() + ".");
-            } else {
-                receiver.updateHp(damage.calculateTotalDamage());
-                System.out.println("\n" + damager.getPetName() + " hurt " + receiver.getPetName() + " using "
-                        + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
-            }
+            receiver.updateHp(damage.calculateTotalDamage());
 
+            System.out.println("\n" + damager.getPetName() + " hurt " + receiver.getPetName() + " using "
+                    + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
             System.out.println("Random Damage: " + damage.getRandomDamage()
                     + "\nConditional Damage: " + damage.getConditionalDamage());
         }
