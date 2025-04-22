@@ -109,26 +109,32 @@ public class Round {
 
         // Reversal of Fortune Logic (applies to all pet types)
         if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-            double totalRandomDealt = 0;
-            double totalRandomTaken = 0;
+            double totalDelta = 0;
 
-            for (Damage past : previousRoundDamages) {
-                if (past.getDamager() == damager) {
-                    totalRandomDealt += past.getRandomDamage();
+            for (List<Damage> round : roundHistory) {
+                double dealt = 0;
+                double taken = 0;
+
+                for (Damage damage : round) {
+                    if (damage.getDamager() == damager) {
+                        dealt += damage.getRandomDamage();
+                    }
+                    if (damage.getReceiver() == damager) {
+                        taken += damage.getRandomDamage();
+                    }
                 }
-                if (past.getReceiver() == damager) {
-                    totalRandomTaken += past.getRandomDamage();
-                }
+
+                double delta = dealt - taken;
+                totalDelta += delta;
+
+                System.out.println("[Reversal] Round Delta for " + damager.getPetName() + ": " +
+                        delta + " (Dealt: " + dealt + ", Taken: " + taken + ")");
             }
+            
+            System.out.println("[Reversal] Total Delta for " + damager.getPetName() + ": " + totalDelta);
 
-            double damageDelta = totalRandomDealt - totalRandomTaken;
-
-            System.out.println("[Reversal] " + damager.getPetName() + "'s delta = " + damageDelta
-                    + " (Total Dealt: " + totalRandomDealt
-                    + ", Total Taken: " + totalRandomTaken + ")");
-
-            baseDamage = Math.max(0, baseDamage - (int) damageDelta);
-            conditional = Math.max(0, conditional - damageDelta);
+            baseDamage = Math.max(0, baseDamage - (int) totalDelta);
+            conditional = Math.max(0, conditional - totalDelta);
         }
 
         Damage damage = new Damage(baseDamage, conditional, receiver, damager);
