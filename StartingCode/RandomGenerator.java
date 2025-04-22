@@ -32,8 +32,8 @@ public enum RandomGenerator {
 	 * @param max Highest number that can be generated
 	 * @return Random int
 	 */
-	public int generateNum(int max)
+	public double generateNum(int max)
 	{
-		return random.nextInt(max);
+		return random.nextDouble(max);
 	}
 }

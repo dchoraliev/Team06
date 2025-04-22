@@ -4,9 +4,7 @@ import java.util.*;
  * This class is the game's primary controller which creates pets, runs the game, and creates battles.
  */
 public class PrimaryController {
-//    private final int MAX_PETS = 2;
-    private int numberOfPlayers;
-    private List<Pet> petList;
+	private List<Pet> petList;
     private RandomGenerator randomInstance;
     private List<Battle> battleList;
     public PrimaryController() {}
@@ -21,8 +19,9 @@ public class PrimaryController {
         randomInstance = RandomGenerator.INSTANCE;
 
         boolean play = true;
-        while(play == true) {
-            getPlayerCount();
+        while(play) {
+            Input boundary = new Input();
+			int numberOfPlayers = boundary.getNumberPlayers();
             for (int i = 0; i < numberOfPlayers; i++) {
                 createPet();
             }
@@ -35,15 +34,8 @@ public class PrimaryController {
                 petList.removeFirst();
             }
             battleList.removeFirst();
-            Input boundary = new Input();
             play = boundary.checkContinue();
         }
-    }
-
-    public void getPlayerCount()
-    {
-        Input boundary = new Input();
-        numberOfPlayers = boundary.getNumberPlayers();
     }
 
     /**

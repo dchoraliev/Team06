@@ -43,7 +43,7 @@ public class Round {
      */
     public Damage CalculateDamagePerPet(Pet damager, Pet receiver, List<Damage> previousRoundDamages) {
         double conditional = 0;
-        int baseDamage = random.generateNum(5);
+        double baseDamage = random.generateNum(5);
         if (damager.getPetType() == PetTypes.POWER) {
             if (damager.getSkill() == Skills.ROCK_THROW && receiver.getSkill() == Skills.SCISSORS_POKE) {
                 conditional = baseDamage * 5;
