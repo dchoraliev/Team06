@@ -278,7 +278,7 @@ public class Input {
         boolean validType = false;
         while(validType == false) {
             try {
-                System.out.println("Please input a number to predict the move of the target pet.");
+                System.out.println("Please input a number for " + currentPet.getPetName() + "'s prediction of the move used by the target pet.");
                 System.out.println("1 = Rock Throw, 2 = Scissors Poke, 3 = Paper Cut, 4 = Shoot the Moon, 5 = Reversal of Fortune");
                 userInput = scanner.nextInt();
                 boolean validInput = false;

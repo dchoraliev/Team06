@@ -196,6 +196,7 @@
                 }
             }*/
             Input input = new Input();
+            input.setCurrentPet(this);
             return input.predictSkill();     //implemented in Input class instead
         } // todo this iteration, just need to prompt the user for skill prediction and return it
 
@@ -256,7 +257,7 @@
         @Override
         public void setRechargeTime(Skills skill, int rechargeTime) {
             if (skill == Skills.SHOOT_THE_MOON || skill == Skills.REVERSAL_OF_FORTUNE) {
-                skillRechargeTimes.put(skill, 6);
+                skillRechargeTimes.put(skill, rechargeTime);
             } else {
                 skillRechargeTimes.put(skill, rechargeTime);
             }
