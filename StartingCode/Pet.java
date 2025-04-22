@@ -195,7 +195,8 @@
                     System.out.println("Invalid input. Please enter a numeric value.");
                 }
             }*/
-            return null;    //implemented in Input class instead
+            Input input = new Input();
+            return input.predictSkill();     //implemented in Input class instead
         } // todo this iteration, just need to prompt the user for skill prediction and return it
 
         /**
