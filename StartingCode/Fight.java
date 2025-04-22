@@ -29,11 +29,16 @@ public class Fight {
         int rounds = 0;
         List<Pet> sleepingPets = new ArrayList<>();
         while (awake > 1) {
-                Round round = new Round(petList, random);
+                List<Damage> allPreviousDamages = new ArrayList<>();
+                for (List<Damage> rd : roundsDamage) {
+                    allPreviousDamages.addAll(rd);
+                }
+                Round round = new Round(petList, random, allPreviousDamages);
                 lastRound = round;
                 rounds += 1;
                 System.out.println("\n_____________________");
                 System.out.println("Playing round #" + rounds);
+
                 for (Pet pet1 : petList) {
                     System.out.println(pet1.getPetName() + "\nHP: " + pet1.getCurrentHp());
                     for (Skills skill : Skills.values()) {

@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-
 public class Round {
     private final List<Pet> petList = new ArrayList<>();
     private final RandomGenerator random;
@@ -15,9 +14,10 @@ public class Round {
      * @param petList An array of pets to be in the fight
      * @param randomInstance The instance of RandomGenerator to be used
      */
-    public Round(List<Pet> petList, RandomGenerator randomInstance) {
+    public Round(List<Pet> petList, RandomGenerator randomInstance, List<Damage> previousDamages) {
         this.petList.addAll(petList);
         this.random = randomInstance;
+        this.previousRoundDamages.addAll(previousDamages);
     }
 
     /**
@@ -109,33 +109,27 @@ public class Round {
 
         // Reversal of Fortune Logic (applies to all pet types)
         if (damager.getSkill() == Skills.REVERSAL_OF_FORTUNE) {
-            double totalDelta = 0;
+            double totalDealt = 0;
+            double totalTaken = 0;
 
-            for (List<Damage> round : roundHistory) {
-                double dealt = 0;
-                double taken = 0;
-
-                for (Damage damage : round) {
-                    if (damage.getDamager() == damager) {
-                        dealt += damage.getRandomDamage();
-                    }
-                    if (damage.getReceiver() == damager) {
-                        taken += damage.getRandomDamage();
-                    }
+            for (Damage damage : previousRoundDamages) {
+                if (damage.getDamager() == damager) {
+                    totalDealt += damage.getRandomDamage();
                 }
-
-                double delta = dealt - taken;
-                totalDelta += delta;
-
-                System.out.println("[Reversal] Round Delta for " + damager.getPetName() + ": " +
-                        delta + " (Dealt: " + dealt + ", Taken: " + taken + ")");
+                if (damage.getReceiver() == damager) {
+                    totalTaken += damage.getRandomDamage();
+                }
             }
-            
-            System.out.println("[Reversal] Total Delta for " + damager.getPetName() + ": " + totalDelta);
 
-            baseDamage = Math.max(0, baseDamage - (int) totalDelta);
-            conditional = Math.max(0, conditional - totalDelta);
+            double delta = totalDealt - totalTaken;
+
+            System.out.println("[Reversal] Total Delta for " + damager.getPetName() + ": " + delta
+                    + " (Dealt: " + totalDealt + ", Taken: " + totalTaken + ")");
+
+            baseDamage = baseDamage - delta;
+            conditional = conditional - delta;
         }
+
 
         Damage damage = new Damage(baseDamage, conditional, receiver, damager);
         return damage;
@@ -218,7 +212,6 @@ public class Round {
         }
 
         roundHistory.add(new ArrayList<>(damageList));
-        previousRoundDamages.addAll(damageList);
 
         return damageList;
     }
