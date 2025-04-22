@@ -19,21 +19,40 @@ public enum RandomGenerator {
 	}
 
 	/**
-	 * Generates a number, any number is possible
-	 * @return Random int
+	 * Generates a random double, any number is possible
+	 * @return Random double
 	 */
-	public int generateNum()
+	public double generateDouble()
 	{
 		return random.nextInt();
 	}
 
 	/**
-	 * Generates a number with a max value
+	 * Generates a random double with a max value
+	 * @param max Highest number that can be generated
+	 * @return Random double
+	 */
+	public double generateDouble(int max)
+	{
+		return random.nextDouble(max);
+	}
+
+	/**
+	 * Generates a random int, any number is possible
+	 * @return Random int
+	 */
+	public int generateInt()
+	{
+		return random.nextInt();
+	}
+
+	/**
+	 * Generates a random int with a max value
 	 * @param max Highest number that can be generated
 	 * @return Random int
 	 */
-	public double generateNum(int max)
+	public int generateInt(int max)
 	{
-		return random.nextDouble(max);
+		return random.nextInt(max);
 	}
 }

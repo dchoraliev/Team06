@@ -69,7 +69,7 @@ public class Fight {
                     System.out.println("- " + p.getPetName() + " (" + p.getCurrentHp() + " HP)");
                 }
 
-                int index = random.generateNum(topPets.size());
+                int index = random.generateInt(topPets.size());
                 roundWinner = topPets.get(index);
                 System.out.println("Randomly selected winner: " + roundWinner.getPetName());
             }
