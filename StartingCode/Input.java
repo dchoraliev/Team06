@@ -206,6 +206,20 @@ public class Input {
             return PlayerTypes.HUMAN;
     }
 
+    public int getNumberPlayers()
+    {
+        int userInput = 0;
+        while (userInput <= 1) {
+            System.out.println("Please input a number to determine the number of players.");
+            userInput = scanner.nextInt();
+            if (userInput <= 1)
+            {
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return userInput;
+    }
+
     /**
      *  Determines which skill a pet will use each round based on user input.
      *  Checks for skill recharge times first to make sure the input is valid.

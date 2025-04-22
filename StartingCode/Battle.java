@@ -23,7 +23,7 @@ public class Battle {
             }
             fight.executeFight();
             fightList.add(fight);
-            System.out.println(fight.getWinner().getPetName() + " won fight " + fightNum + "!");
+            System.out.println("\n" + fight.getWinner().getPetName() + " won fight " + fightNum + "!");
             for (Pet pet : petList) {
                 pet.reset();
             }

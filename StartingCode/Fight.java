@@ -25,6 +25,7 @@ public class Fight {
     public void executeFight() {
         int awake = petList.size();
         int rounds = 0;
+        List<Pet> sleepingPets = new ArrayList<>();
         while (awake > 1) {
                 Round round = new Round(petList, random);
                 rounds += 1;
@@ -39,8 +40,9 @@ public class Fight {
                 List<Damage> damageList = round.executeRound();
                 roundsDamage.add(damageList);
                 for (Pet pet : petList) {
-                    if (!pet.isAwake()) {
+                    if (!pet.isAwake() && !sleepingPets.contains(pet)) {
                         awake -= 1;
+                        sleepingPets.add(pet);
                     }
                 }
         }
