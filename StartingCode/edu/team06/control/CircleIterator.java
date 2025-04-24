@@ -3,13 +3,9 @@ package edu.team06.control;
 import edu.team06.entity.Pair;
 import edu.team06.entity.Playable;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-public class CircleIterator implements Iterator<List<Pair<Playable>>> {
+public class CircleIterator implements Iterable<List<Pair<Playable>>> {
     private final List<Playable> players;
     private final int totalRounds;
     private int currentRound = 0;
@@ -25,34 +21,51 @@ public class CircleIterator implements Iterator<List<Pair<Playable>>> {
 
 
     @Override
-    public boolean hasNext() {
-        return currentRound < totalRounds;
+    public Iterator<List<Pair<Playable>>> iterator() {
+        return new ConcreteIterator();
     }
 
-    @Override
-    public List<Pair<Playable>> next() {
-        int numOfPlayers = players.size();
-        List<Pair<Playable>> matchups = new ArrayList<>();
-        for (int i = 0; i < numOfPlayers / 2; i++) {
-            Playable p1 = players.get(i);
-            Playable p2 = players.get(numOfPlayers - 1 - i);
 
-            // Skip matches involving the dummy player
-            if (p1 != null && p2 != null) {
+
+    private class ConcreteIterator implements Iterator<List<Pair<Playable>>>
+    {
+        @Override
+        public boolean hasNext() {
+            return currentRound < totalRounds;
+        }
+
+        @Override
+        public List<Pair<Playable>> next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("No more rounds");
+            }
+
+            List<Pair<Playable>> matchups = new ArrayList<>();
+
+            int mid = players.size() / 2;
+            for (int i = 0; i < mid; i++) {
+                Playable p1 = players.get(i);
+                Playable p2 = players.get(players.size() - 1 - i);
                 matchups.add(new Pair<>(p1, p2));
             }
-        }
-        // Rotate players (except index 0, which is fixed)
-        List<Playable> rotated = new ArrayList<>(players);
-        Playable anchor = rotated.remove(0);
-        Collections.rotate(rotated, 1);
-        rotated.add(0, anchor);
 
-        for (int i = 0; i < players.size(); i++) {
-            players.set(i, rotated.get(i));
+            rotate();
+            currentRound++;
+            return matchups;
         }
 
-        currentRound++;
-        return matchups;
+        private void rotate() {
+            Playable anchor = players.get(0);
+            List<Playable> rotated = new ArrayList<>(players.size());
+            rotated.add(anchor);
+            rotated.add(players.get(players.size() - 1)); // move last to second
+            for (int i = 1; i < players.size() - 1; i++) {
+                rotated.add(players.get(i));
+            }
+
+            for (int i = 0; i < players.size(); i++) {
+                players.set(i, rotated.get(i));
+            }
+        }
     }
 }
