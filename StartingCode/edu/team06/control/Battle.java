@@ -21,14 +21,14 @@ public class Battle {
         for (int i = 0; i < fightNumber; i++) {
             Fight fight = new Fight(petList, random);
             int fightNum = fightList.size() + 1;
-            System.out.println("\nExecuting Fight " + fightNum + "/" + fightNumber);
+            System.out.println("\n\033[0;35mExecuting Fight " + fightNum + "/" + fightNumber + "\033[0m");
             System.out.println("Pets in fight:");
             for (Pet pet : petList) {
                 System.out.println("Name: " + pet.getPetName() + ", Type: " + pet.getPetType());
             }
             fight.executeFight();
             fightList.add(fight);
-            System.out.println("\n" + fight.getWinner().getPetName() + " won fight " + fightNum + "!");
+            System.out.println("\n\033[1;35m" + fight.getWinner().getPetName() + " won fight " + fightNum + "!\033[0m");
             for (Pet pet : petList) {
                 pet.reset();
             }
@@ -45,13 +45,13 @@ public class Battle {
             }
         }
 
-        System.out.println("Pet " + petList.get(0).getPetName() + " wins: " + petOneWins);
-        System.out.println("Pet " + petList.get(1).getPetName() + " wins: " + petTwoWins);
+        System.out.println("\033[0;36mPet " + petList.get(0).getPetName() + " wins: " + petOneWins + "\033[0m");
+        System.out.println("\033[0;33mPet " + petList.get(1).getPetName() + " wins: " + petTwoWins + "\033[0m");
         if (petOneWins > petTwoWins) {
-            System.out.println("\nPet " + petList.get(0).getPetName() + " won the battle!" + "\n_____________________");
+            System.out.println("\n\033[0;36mPet " + petList.get(0).getPetName() + " won the battle!" + "\033[0m\n_____________________");
             return petList.get(0);
         } else if (petTwoWins > petOneWins) {
-            System.out.println("\nPet " + petList.get(1).getPetName() + " won the battle!" + "\n_____________________");
+            System.out.println("\n\033[0;33mPet " + petList.get(1).getPetName() + " won the battle!" + "\033[0m\n_____________________");
             return petList.get(1);
         }
         else {

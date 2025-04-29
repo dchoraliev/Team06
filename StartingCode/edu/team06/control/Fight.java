@@ -43,12 +43,12 @@ public class Fight {
                 lastRound = round;
                 rounds += 1;
                 System.out.println("\n_____________________");
-                System.out.println("Playing round #" + rounds);
+                System.out.println("\033[1;37mPlaying round #" + rounds + "\033[0m");
 
                 for (Pet pet1 : petList) {
-                    System.out.println(pet1.getPetName() + "\nHP: " + pet1.getCurrentHp());
+                    System.out.println("\033[32m" + pet1.getPetName() + "\nHP: " + pet1.getCurrentHp() + "\033[0m");
                     for (Skills skill : Skills.values()) {
-                        System.out.println(skill.toString() + " CD: " + pet1.getSkillRechargeTime(skill));
+                        System.out.println("\033[34m" + skill.toString() + " CD: " + pet1.getSkillRechargeTime(skill) + "\033[0m");
                     }
                 }
                 List<Damage> damageList = round.executeRound();

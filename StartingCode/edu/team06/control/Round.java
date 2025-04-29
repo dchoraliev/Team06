@@ -214,10 +214,10 @@ public class Round {
 
             receiver.updateHp(damage.calculateTotalDamage());
 
-            System.out.println("\n" + damager.getPetName() + " hurt " + receiver.getPetName() + " using "
+            System.out.println("\n\033[31m" + damager.getPetName() + " hurt " + receiver.getPetName() + " using "
                     + damager.getSkill() + " for " + damage.calculateTotalDamage() + " damage.");
             System.out.println("Random Damage: " + damage.getRandomDamage()
-                    + "\nConditional Damage: " + damage.getConditionalDamage());
+                    + "\nConditional Damage: " + damage.getConditionalDamage() + "\033[0m");
         }
 
         roundHistory.add(new ArrayList<>(damageList));
