@@ -5,12 +5,12 @@ import edu.team06.entity.Playable;
 
 import java.util.*;
 
-public class CircleIterator implements Iterable<List<Pair<Playable>>> {
+public class SeasonIterator implements Iterable<List<Pair<Playable>>> {
     private final List<Playable> players;
     private final int totalRounds;
     private int currentRound = 0;
 
-    public CircleIterator(List<Playable> originalPlayers) {
+    public SeasonIterator(List<Playable> originalPlayers) {
         this.players = new ArrayList<>(originalPlayers);
         if (this.players.size() % 2 != 0)
         {
