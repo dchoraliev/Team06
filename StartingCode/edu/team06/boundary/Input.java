@@ -14,7 +14,6 @@ import java.util.*;
 public class Input {
     private Scanner scanner;
     private Pet currentPet;
-    private Pet targetPet;
 
     public Input()
     {
@@ -48,10 +47,6 @@ public class Input {
         this.currentPet = currentPet;
     }
 
-    public void setTargetPet(Pet targetPet)
-    {
-        this.targetPet = targetPet;
-    }
 
     /**
      *  Used to set the random seed at the start of the program.
@@ -194,7 +189,7 @@ public class Input {
         boolean validInput = false;
         while(validInput == false) {
             try {
-                System.out.println("Please input a number to determine your player type. (1 = Human, 2 = Computer)  Computer currently not supported.");
+                System.out.println("Please input a number to determine your player type. (1 = Human, 2 = Computer)");
                 userInput = scanner.nextInt();
 
                 while (userInput != 1 && userInput != 2) {
@@ -211,7 +206,7 @@ public class Input {
         if (userInput == 1)
             return PlayerTypes.HUMAN;
         else
-            return PlayerTypes.HUMAN;
+            return PlayerTypes.COMPUTER;
     }
 
     public int getNumberPlayers() {
@@ -328,6 +323,27 @@ public class Input {
     }
 
 
-
-
+    public int getMode()
+    {
+        int userInput = 0;
+        boolean validInput = false;
+        while (validInput == false) {
+            try {
+                System.out.println("Please input a number to determine the game mode.");
+                System.out.println("1 = Battle, 2 = Season, 3 = Exhibition Fight");
+                while (userInput != 1 && userInput != 2 && userInput != 3) {
+                    userInput = scanner.nextInt();
+                    if (userInput != 1 && userInput != 2 && userInput != 3) {
+                        System.out.println("Please enter a valid number");
+                    }
+                    else
+                        validInput = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input.");
+                scanner.nextLine();
+            }
+        }
+        return userInput;
+    }
 }
