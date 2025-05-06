@@ -1,6 +1,7 @@
 package edu.team06.entity;
 
 import edu.team06.boundary.Input;
+import edu.team06.util.AIRandomGenerator;
 
 import java.util.HashMap;
     import java.util.List;
@@ -49,6 +50,9 @@ import java.util.HashMap;
             this.startingHp = startingHp;
             this.currentHp = startingHp;
             this.skillRechargeTimes = new HashMap<>();
+            if (playerType == PlayerTypes.COMPUTER) {
+                AIRandomGenerator.INSTANCE.setSeed(252342342);
+            }
         }
         //name, type, starting hp, current hp, skill
 
@@ -138,8 +142,13 @@ import java.util.HashMap;
         @Override
         public Skills chooseSkill() {
             Input input = new Input();
-            input.setCurrentPet(this);
-            chosenSkill = input.getSkillType();
+            if (this.playerType == PlayerTypes.HUMAN) {
+                input.setCurrentPet(this);
+                chosenSkill = input.getSkillType();
+            } else {
+                AIRandomGenerator aiRandomGenerator = AIRandomGenerator.INSTANCE;
+                chosenSkill = aiRandomGenerator.chooseSkill(this);
+            }
             return chosenSkill;
         }
 
@@ -198,9 +207,14 @@ import java.util.HashMap;
                     System.out.println("Invalid input. Please enter a numeric value.");
                 }
             }*/
-            Input input = new Input();
-            input.setCurrentPet(this);
-            return input.predictSkill();     //implemented in edu.team06.boundary.Input class instead
+            if (playerType == PlayerTypes.HUMAN) {
+                Input input = new Input();
+                input.setCurrentPet(this);
+                return input.predictSkill();
+            } //implemented in edu.team06.boundary.Input class instead
+            else {
+                return AIRandomGenerator.INSTANCE.predictSkill();
+            }
         } // todo this iteration, just need to prompt the user for skill prediction and return it
 
         /**
