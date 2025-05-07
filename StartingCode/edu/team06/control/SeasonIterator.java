@@ -5,6 +5,10 @@ import edu.team06.entity.Playable;
 
 import java.util.*;
 
+/**
+ * This class creates the Iteration for fights combined with the Circle Method.
+ * @author Dimitar Choraliev, Gehrig Fast
+ */
 public class SeasonIterator implements Iterable<List<Pair<Playable>>> {
     private final List<Playable> players;
     private final int totalRounds;
@@ -29,11 +33,19 @@ public class SeasonIterator implements Iterable<List<Pair<Playable>>> {
 
     private class ConcreteIterator implements Iterator<List<Pair<Playable>>>
     {
+        /**
+         * This class shows whether there are any rounds left.
+         * @return True if there are any rounds left, false otherwise.
+         */
         @Override
         public boolean hasNext() {
             return currentRound < totalRounds;
         }
 
+        /**
+         * This class shows the next matchup.
+         * @return The next matchup.
+         */
         @Override
         public List<Pair<Playable>> next() {
             if (!hasNext()) {
@@ -54,6 +66,9 @@ public class SeasonIterator implements Iterable<List<Pair<Playable>>> {
             return matchups;
         }
 
+        /**
+         * This class rotates the pets according to the Circle method.
+         */
         private void rotate() {
             Playable anchor = players.get(0);
             List<Playable> rotated = new ArrayList<>(players.size());
