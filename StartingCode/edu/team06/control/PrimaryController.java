@@ -16,7 +16,7 @@ public class PrimaryController {
     private RandomGenerator randomInstance;
     private List<Battle> battleList;
     private List<Fight> fightList;
-    //private List<Season> seasonList;
+    private List<Season> seasonList;
     public PrimaryController() {}
 
     /**
@@ -27,7 +27,7 @@ public class PrimaryController {
         petList = new ArrayList<>();
         battleList = new ArrayList<>();
         fightList = new ArrayList<>();
-        //seasonList = new ArrayList<>();
+        seasonList = new ArrayList<>();
         randomInstance = RandomGenerator.INSTANCE;
 
         boolean play = true;
@@ -50,7 +50,6 @@ public class PrimaryController {
                 }
                 battleList.removeFirst();
             }
-            /*
             else if (modeType == 2) // season
             {
                 int numberOfPlayers = boundary.getNumberPlayers();
@@ -67,7 +66,6 @@ public class PrimaryController {
                 }
                 seasonList.removeFirst();
             }
-            */
             else if (modeType == 3) //  exhibition fight
             {
                 int numberOfPlayers = boundary.getNumberPlayers();
@@ -131,15 +129,14 @@ public class PrimaryController {
     /**
      * Creates a season with all necessary inputs.
      */
-    /*
     public void createSeason()
     {
         Input boundary = new Input();
         long seed = boundary.getRandomSeed();
+        int fightCount = boundary.getFightNumber();
         randomInstance.setSeed(seed);
-        Season newSeason = new Season(petList, randomInstance);
-        battleList.add(newSeason);
+        Season newSeason = new Season(petList, randomInstance, fightCount);
+        seasonList.add(newSeason);
     }
-    */
 
 }

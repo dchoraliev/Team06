@@ -13,7 +13,11 @@ public class Battle {
     private List<Fight> fightList = new ArrayList<>();
     private RandomGenerator random;
     private int fightNumber;
+    private HashMap<Pet, Integer> fightWins;
 
+    public HashMap<Pet, Integer> getFightWins() {
+        return fightWins;
+    }
 
     /**
      * Executes the battle with the pets provided.
@@ -37,7 +41,7 @@ public class Battle {
 
         }
 
-        HashMap<Pet, Integer> fightWins = new HashMap<Pet, Integer>();
+        fightWins = new HashMap<Pet, Integer>();
 
         for (Pet pet : petList) {
             fightWins.put(pet, 0);
