@@ -8,6 +8,7 @@ import edu.dselent.player.PetInstance;
 import edu.dselent.player.PetTypes;
 import edu.dselent.settings.PlayerSettings;
 import edu.dselent.skill.Skills;
+import edu.dselent.player.defaultspeed.OpponentTracker;
 
 import java.util.ArrayList;
 import java.util.Arrays;

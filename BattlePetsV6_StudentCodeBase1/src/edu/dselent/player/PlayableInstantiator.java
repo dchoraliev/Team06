@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 //import java.util.Map;
 
+import edu.dselent.player.spring2025.section02.team06.SEAL_TEAM_SIX;
 import edu.dselent.player.defaultintelligence.DefaultIntelligence;
 import edu.dselent.player.defaultpower.DefaultPower;
 import edu.dselent.player.defaultspeed.DefaultSpeed;
@@ -71,6 +72,10 @@ public class PlayableInstantiator
 		}
 		else if(playerType == PlayerTypes.DEFAULT_INTELLIGENCE) {
 			thePlayable = new DefaultIntelligence(playableUid, playerSettings);
+		}
+		else if(playerType == PlayerTypes.SEAL_TEAM_SIX)
+		{
+			thePlayable = new SEAL_TEAM_SIX(playableUid, playerSettings);
 		}
 		else
 		{
