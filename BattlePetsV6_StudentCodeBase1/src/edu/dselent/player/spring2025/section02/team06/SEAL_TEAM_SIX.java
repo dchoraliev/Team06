@@ -7,7 +7,9 @@ import edu.dselent.settings.PlayerSettings;
 import edu.dselent.skill.Skills;
 
 import java.util.*;
-
+// TEAM NAME: SEAL_TEAM_SIX
+// PET NAME: SEAL_TEAM_SIX_PET
+// PET TYPE: SPEED
 public class SEAL_TEAM_SIX extends PetInstance {
     private final Random rng = new Random(7331);
     private final ArrayList<Skills> availableSkills = new ArrayList<>();
