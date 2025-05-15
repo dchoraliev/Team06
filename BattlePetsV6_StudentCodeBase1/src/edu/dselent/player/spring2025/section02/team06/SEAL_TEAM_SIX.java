@@ -10,18 +10,29 @@ import java.util.*;
 
 public class SEAL_TEAM_SIX extends PetInstance {
     private final Random rng = new Random(7331);
-    private ArrayList<Skills> availableSkills = new ArrayList<>();
+    private final ArrayList<Skills> availableSkills = new ArrayList<>();
     private OpponentTracker tracker;
     private int opponentIndex;
     private int selfIndex;
     private Skills skillPrediction;
-    private Skills lastOppSkill = null;
-
+    private int round = 0;
     private double totalRandomDealt = 0;
     private double totalRandomTaken = 0;
 
     public SEAL_TEAM_SIX(int playableUid, PlayerSettings info) {
         super(playableUid, info);
+    }
+
+    private boolean isOpponentSpeedType() {
+        return tracker.getPetInfo().get(opponentIndex).toString().equalsIgnoreCase("SPEED");
+    }
+    private boolean isOpponentPowerType() {
+        return tracker.getPetInfo().get(opponentIndex).toString().equalsIgnoreCase("POWER");
+    }
+
+
+    private boolean isOpponentIntelligenceType() {
+        return tracker.getPetInfo().get(opponentIndex).toString().equalsIgnoreCase("INTELLIGENCE");
     }
 
     @Override
@@ -35,47 +46,77 @@ public class SEAL_TEAM_SIX extends PetInstance {
 
         double oppHp = tracker.getPetHps().get(opponentIndex);
         Map<Skills, Integer> oppCooldowns = tracker.getPetCooldowns().get(opponentIndex);
+        Skills predictedOppSkill = predictLikelySkill(oppCooldowns);
 
-        // Shoot the Moon as soon as it is ready, always
-        if (availableSkills.contains(Skills.SHOOT_THE_MOON)) {
-            skillPrediction = predictLikelySkill(oppCooldowns);
+        // Round 0: always open with Shoot the Moon
+        if (getCurrentRound() == 0 && availableSkills.contains(Skills.SHOOT_THE_MOON)) {
+            skillPrediction = Skills.SHOOT_THE_MOON;
             return Skills.SHOOT_THE_MOON;
         }
 
-        // Reversal of Fortune: use when behind
+
+        if (isOpponentPowerType()) {
+            if (getCurrentRound() == 0 && availableSkills.contains(Skills.SHOOT_THE_MOON)) {
+                skillPrediction = Skills.SHOOT_THE_MOON;
+                return Skills.SHOOT_THE_MOON;
+            }
+        }
+
+        if (!isOpponentIntelligenceType())
+        {
+            if (getCurrentRound() == 0 && availableSkills.contains(Skills.SHOOT_THE_MOON))
+            {
+                skillPrediction = Skills.ROCK_THROW;
+                return Skills.SHOOT_THE_MOON;
+            }
+
+            if (availableSkills.contains(Skills.SHOOT_THE_MOON)) {
+                skillPrediction = predictLikelySkill(tracker.getPetCooldowns().get(opponentIndex));
+                return Skills.SHOOT_THE_MOON;
+            }
+        }
+
+
+        // Use Shoot the Moon whenever it's off cooldown
+        if (availableSkills.contains(Skills.SHOOT_THE_MOON)) {
+            skillPrediction = predictedOppSkill;
+            return Skills.SHOOT_THE_MOON;
+        }
+
+        // Use Reversal of Fortune when significantly behind
         if ((totalRandomTaken - totalRandomDealt) >= 3 && availableSkills.contains(Skills.REVERSAL_OF_FORTUNE)) {
             return Skills.REVERSAL_OF_FORTUNE;
         }
 
-        // Conditional Speed Skill Usage
-        if (oppHp >= 75 && lastOppSkill != null &&
-                (lastOppSkill == Skills.SCISSORS_POKE || lastOppSkill == Skills.PAPER_CUT) &&
+        // Conditional Skill Logic (based on prediction)
+        if (oppHp >= 75 &&
+                (predictedOppSkill == Skills.SCISSORS_POKE || predictedOppSkill == Skills.PAPER_CUT) &&
                 availableSkills.contains(Skills.ROCK_THROW)) {
             return Skills.ROCK_THROW;
         }
 
-        if (oppHp < 75 && oppHp >= 25 && lastOppSkill != null &&
-                (lastOppSkill == Skills.ROCK_THROW || lastOppSkill == Skills.PAPER_CUT) &&
+        if (oppHp >= 25 && oppHp < 75 &&
+                (predictedOppSkill == Skills.ROCK_THROW || predictedOppSkill == Skills.PAPER_CUT) &&
                 availableSkills.contains(Skills.SCISSORS_POKE)) {
             return Skills.SCISSORS_POKE;
         }
 
-        if (oppHp < 25 && lastOppSkill != null &&
-                (lastOppSkill == Skills.ROCK_THROW || lastOppSkill == Skills.SCISSORS_POKE) &&
+        if (oppHp < 25 &&
+                (predictedOppSkill == Skills.ROCK_THROW || predictedOppSkill == Skills.SCISSORS_POKE) &&
                 availableSkills.contains(Skills.PAPER_CUT)) {
             return Skills.PAPER_CUT;
         }
 
-        // If we don’t have last skill, use fallback based on HP only
+        // Fallback to HP-based guess if prediction doesn't help
         if (oppHp >= 75 && availableSkills.contains(Skills.ROCK_THROW)) {
             return Skills.ROCK_THROW;
-        } else if (oppHp >= 25 && oppHp < 75 && availableSkills.contains(Skills.SCISSORS_POKE)) {
+        } else if (oppHp >= 25 && availableSkills.contains(Skills.SCISSORS_POKE)) {
             return Skills.SCISSORS_POKE;
-        } else if (oppHp < 25 && availableSkills.contains(Skills.PAPER_CUT)) {
+        } else if (availableSkills.contains(Skills.PAPER_CUT)) {
             return Skills.PAPER_CUT;
         }
 
-        // RPS-style backup based on cooldowns
+        // Secondary fallback based on cooldowns
         if (oppCooldowns.getOrDefault(Skills.ROCK_THROW, 0) > 1 && availableSkills.contains(Skills.SCISSORS_POKE)) {
             return Skills.SCISSORS_POKE;
         }
@@ -86,11 +127,20 @@ public class SEAL_TEAM_SIX extends PetInstance {
             return Skills.ROCK_THROW;
         }
 
-        // Fallback random
+        // Pure fallback
         return availableSkills.get(rng.nextInt(availableSkills.size()));
     }
 
     private Skills predictLikelySkill(Map<Skills, Integer> oppCooldowns) {
+        if (getCurrentRound() == 0 && isOpponentSpeedType())
+        {
+            return Skills.ROCK_THROW;
+        }
+        if (getCurrentRound() == 0 && isOpponentPowerType())
+        {
+            return Skills.SHOOT_THE_MOON;
+        }
+
         return oppCooldowns.entrySet().stream()
                 .min(Comparator.comparingInt(Map.Entry::getValue))
                 .map(Map.Entry::getKey)
@@ -106,25 +156,31 @@ public class SEAL_TEAM_SIX extends PetInstance {
     public void update(Object event) {
         if (event instanceof BaseEvent base) {
             switch (base.getEventType()) {
-                case FIGHT_START -> handleFightStart((FightStartEvent) base);
-                case ROUND_START -> tracker.updateCooldowns();
+                case FIGHT_START -> {
+                    handleFightStart((FightStartEvent) base);
+                    round = 0;
+                }
+                case ROUND_START -> {
+                    tracker.updateCooldowns();
+                    round++;
+                }
                 case ATTACK -> {
                     AttackEvent attack = (AttackEvent) base;
                     tracker.track(attack);
 
-                    if (attack.getAttackingPlayableUid() == selfIndex) {
+                    if (attack.getAttackingPlayableUid() == getPlayableUid()) {
                         totalRandomDealt += attack.getDamage().getRandomDamage();
                     }
-                    if (attack.getVictimPlayableUid() == selfIndex) {
+                    if (attack.getVictimPlayableUid() == getPlayableUid()) {
                         totalRandomTaken += attack.getDamage().getRandomDamage();
-                    }
-
-                    if (attack.getAttackingPlayableUid() == opponentIndex) {
-                        lastOppSkill = attack.getAttackingSkillChoice();
                     }
                 }
             }
         }
+    }
+
+    private int getCurrentRound() {
+        return round;
     }
 
     private void handleFightStart(FightStartEvent fightStart) {
@@ -136,8 +192,8 @@ public class SEAL_TEAM_SIX extends PetInstance {
             }
         }
         tracker = new OpponentTracker(fightStart.getPlayerEventInfoList());
-        lastOppSkill = null;
         totalRandomDealt = 0;
         totalRandomTaken = 0;
+        skillPrediction = Skills.ROCK_THROW;
     }
 }
